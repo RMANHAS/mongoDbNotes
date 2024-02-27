@@ -1,0 +1,52 @@
+1. drop ==> is used to delete table, database, index
+
+How to delete a table
+syntax
+    test> db.collectionname.drop()
+
+example:- 
+	jio> db.order.drop();
+	    true
+	jio> show collections;
+
+example:-
+	jio> db.dropDatabase();
+	    true
+	jio> show dbs;
+
+2. distinct => to display unique records only.
+ syntax:
+     test> db.collectionname.distinct(fieldname)
+example: -
+aptron> db.product.distinct('name');
+[ 'Laptop', 'Mobile', 'TV', 'mobile', 'washing machine' ]
+aptron> db.product.distinct('company');
+[ 'Dell', 'LG', 'Sony', 'hp', 'mi', 'samsung' ]
+
+3. updateOne()
+   updateMany()
+                 ==> to make some changes in existing records.
+                     $set
+   
+aptron> db.product.updateMany({price:{$gt:5000}},{$set:{}},{$inc:{price:50}});
+aptron> db.product.updateOne({name:"mobile"},{$set:{name:"Mobile"}});
+
+4. regex (regular expression)
+     syntax:
+          db.collectionname.find({/..../})
+           a)/m/ ===> display all records existing small m anywhere
+           b)/^M/ ===> display all records starting with capital M
+           c)/M$/ ===> displays all records ending with letter M
+
+Example: -
+
+aptron> db.product.find({name:/^m/});
+aptron> db.product.find({name:/^M/});
+aptron> db.product.find({name:/e$/});
+aptron> db.product.find({name:{$regex:/mobile/,$options:"i"}});
+
+
+  
+
+
+  

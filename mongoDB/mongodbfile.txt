@@ -1,0 +1,167 @@
+mongodb
+
+show dbs ---to see the database
+
+use name - to create db and enter into the database
+
+db.createCollection('products')----create collection
+
+show collections-- to see the collection
+
+crud operation on db
+
+db.products.insertOne({name:'laptop',price:2300,color:'black'});
+
+db.products.find()
+
+db.products.insertMany([{name:'charger',type:'c type'},{name:'datacable',type:'lightining cable'}])    
+
+db.products.find()
+
+db.products.find({name:'charger'}) ---search by fields(name)
+
+operator======
+==============
+$lt ==> less than
+$gt ==> greater than
+$eq ==> equal to
+$lte ==> less than equal to
+$gte ==> greter than equal to
+$nt ==> not equal to
+$and ==> and
+$or ==> or
+
+dell> db.products.find({price:{$gt:30000}})
+
+dell> db.phone.distinct('price')   
+
+                                                                            
+dell> db.phone.updateOne({$and:[{name:"vikram"},{price:287941}]},{$set:{course:"mern"}});
+
+ db.phone.find().sort({name:-1})   
+
+dell> db.phone.find().sort({name:-1}).skip(2)   
+
+dell> db.phone.aggregate([{$group:{_id:null,max_price:{$max:'$price'}}}]) 
+ 
+dell> db.phone.aggregate([{$group:{_id:null,min_price:{$min:'$price'}}}])
+
+dell> db.phone.aggregate([{$group:{_id:null,average_price:{$avg:'$price'}}}])    
+
+dell> db.phone.countDocuments()   
+
+db.dropDatebase() //here it will delete the current database
+
+db.phone.drop() //here it will delete the phone db 
+
+
+//nested doc. 
+ db.products.update({name:"Rajinder"},{$set:{idCards:{hasPanCard:false,hasAadhaarCard:true }}})// here we nested only only field in db
+
+output----sansung> db.products.findOne({name:"Rajinder"})                                                                                                                         {                                                                                                                                                                         _id: ObjectId("65683b07978e692bc73412df"),                                                                                                                              name: 'Rajinder',                                                                                                                                                       email: 'rajinderrajput@gmail.com',                                                                                                                                      password: 1234567890,                                                                                                                                                   idCards: { hasPanCard: false, hasAadhaarCard: true }  }
+
+---------
+ db.products.updateMany({},{$set:{hobbies:['cricket','football','vollyball']}}  //here we update(i.e nested ) all the fields in db 
+
+db.products.find()  
+
+output---
+[                                                                                                                                                                         {                                                                                                                                                                         _id: ObjectId("656721bd03814ce51234cedd"),                                                                                                                              name: 'table',                                                                                                                                                          price: 13000,                                                                                                                                                           hobbies: [ 'cricket', 'football', 'vollyball' ]                                                                                                                       },                                                                                                                                                                      {                                                                                                                                                                         _id: ObjectId("65683b07978e692bc73412df"),                                                                                                                              name: 'Rajinder',                                                                                                                                                       email: 'rajinderrajput@gmail.com',                                                                                                                                      password: 1234567890,                                                                                                                                                   idCards: { hasPanCard: false, hasAadhaarCard: true }                                                                                                                  }                                                                                                                                                                     ]    
+            
+-------
+//search nested
+
+db.products.find({'idCards.hasPanCard':false})   
+
+//output
+[                                                                                                                                                                         {                                                                                                                                                                         _id: ObjectId("65683b07978e692bc73412df"),                                                                                                                              name: 'Rajinder',                                                                                                                                                       email: 'rajinderrajput@gmail.com',                                                                                                                                      password: 1234567890,                                                                                                                                                   idCards: { hasPanCard: false, hasAadhaarCard: true },                                                                                                                   hobbies: [ 'cricket', 'football', 'vollyball', 'hockey' ]                                                                                                             }                                                                                                                                                                     ] 
+
+note-- nested limit is 100 and its size is 16mb(maximum)
+-----------
+projection in db
+
+
+pro-ecom> db.categories.find({},{name:1})  //HERE WE FIND THE NAME ONLY IN DB BUT UNFORNITUENTLY WE GET THE ID BY DEFAULT. TO OVERCOME THIS PROBLEM WE USE _id:0;
+
+[                                                                                                                                                                         { _id: ObjectId("6595363e253f656ac4b9d10e"), name: 'mens wear' },                                                                                                       { _id: ObjectId("65953647253f656ac4b9d112"), name: 'women wear' },                                                                                                      { _id: ObjectId("6596c1a7fdec757d03d45ea1"), name: 'cotton' },                                                                                                          { _id: ObjectId("6596c1aefdec757d03d45ea5"), name: 'woollen' },                                                                                                         { _id: ObjectId("6596c1b5fdec757d03d45ea9"), name: 'silk' }                                                                                                           ]  
+
+
+pro-ecom> db.categories.find({},{name:1,_id:0}) 
+//output----
+
+[                                                                                                                                                                         { name: 'mens wear' },                                                                                                                                                  { name: 'women wear' },                                                                                                                                                 { name: 'cotton' },                                                                                                                                                     { name: 'woollen' },                                                                                                                                                    { name: 'silk' }                                                                                                                                                      ] 
+
+-------
+//insert new db with company and employee details
+
+pro-ecom> db.companyData.insertOne({name:"Rjinder",isFounded:true,funding:212121212123223333232333,employees:[{name:"rahul",age:"26"},{name:"vickey",age:23}],foundedon:new Date(),foundedontimestamp:new Timestamp()})                                                                                                                    
+//output
+
+pro-ecom> db.companyData.find()                                                                                                                                         [                                                                                                                                                                         {                                                                                                                                                                         _id: ObjectId("659a168ea82f176c50482573"),                                                                                                                              name: 'Rjinder',                                                                                                                                                        isFounded: true,                                                                                                                                                        funding: 2.1212121212322333e+23,                                                                                                                                        employees: [ { name: 'rahul', age: '26' }, { name: 'vickey', age: 23 } ],                                                                                               foundedon: ISODate("2024-01-07T03:12:14.151Z"),                                                                                                                         foundedontimestamp: Timestamp({ t: 1704597134, i: 1 })                                                                                                                }                                                                                                                                                                     ]         
+---------------------------------------
+//SCHEMA VALIDATION
+
+db.createCollection("nonfriction",{
+    validator:{
+        $jsonSchema:{
+            required:['name','price'],
+            properties:{
+                name:{
+                    bsonType:'string',
+                    description:'must be a string and required'
+                },
+                price:{
+                    bsonType:'number',
+                    description:"must be a number and required"
+                }
+            }
+        }
+    },
+    validationAction:'error'
+})
+
+pro-ecom> db.nonfriction.insert({name:"vikram",price:32333})  
+
+//modification on schema
+
+db.runCommand({
+    collMod:'nonfriction',
+    validator:{
+        $jsonSchema:{
+            required:['name','price','authors'],
+            properties:{
+                name:{
+                    bsonType:'string',
+                    description:'must be a string and required'
+                },
+                price:{
+                    bsonType:'number',
+                    description:"must be  a number and required"
+                },
+                authors:{
+                    bsonType:'array',
+                    description:'must be an array and required',
+                    items:{
+                        bsonType:'object',
+                        required:['name','email'],
+                        properties:{
+                            name:{
+                                bsonType:'string',
+                                description:'must be a string and required'
+                            },
+                            email:{
+                                bsonType:'string'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    validationAction:'error'
+})
+
+
+
+
+                                                                                                   

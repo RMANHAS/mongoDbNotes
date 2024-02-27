@@ -1,0 +1,399 @@
+
+C:\Users\Arun>mongosh
+Current Mongosh Log ID: 640593a27494d01c1f3df69c
+Connecting to:          mongodb://127.0.0.1:27017/
+------
+
+test> show dbs;
+admin     40.00 KiB
+config    72.00 KiB
+crud     144.00 KiB
+ecomm    144.00 KiB
+local     88.00 KiB
+met       12.00 KiB
+metro    404.00 KiB
+pogoLtd   72.00 KiB
+test> use ecomm
+switched to db ecomm
+abc_school> show dbs
+admin     40.00 KiBschool
+config    96.00 KiB
+crud     144.00 KiB
+ecomm    144.00 KiB
+local     88.00 KiB
+met       12.00 KiB
+metro    404.00 KiB
+pogoLtd   72.00 KiB
+abc_school> db.createCollection('student');
+
+abc_school> show dbs
+abc_school   16.00 KiB
+admin        40.00 KiB
+config      108.00 KiB
+crud        144.00 KiB
+ecomm       144.00 KiB
+local        88.00 KiB
+met          12.00 KiB
+metro       404.00 KiB
+pogoLtd      72.00 KiB
+abc_school> show collections;
+student
+teachers
+abc_school> db.student.insertOne({id:101,name:"amit",city:"delhi"});
+{
+  acknowledged: true,
+  insertedId: ObjectId("640598166ed44085973241e5")
+}
+abc_school> db.student.insertOne({id:102,name:"manish",city:"noida"});
+{
+  acknowledged: true,
+  insertedId: ObjectId("640598c06ed44085973241e6")
+}
+abc_school> db.student.find();
+[
+  {
+    _id: ObjectId("640598166ed44085973241e5"),
+    id: 101,
+    name: 'amit',
+    city: 'delhi'
+  },
+  {
+    _id: ObjectId("640598c06ed44085973241e6"),
+    id: 102,
+    name: 'manish',
+    city: 'noida'
+  }
+]
+abc_school> db.student.find({name});
+ReferenceError: name is not defined
+abc_school> db.student.find({name:"manish"});
+[
+  {
+    _id: ObjectId("640598c06ed44085973241e6"),
+    id: 102,
+    name: 'manish',
+    city: 'noida'
+  }
+]
+abc_school> db.student.insertMany([{name:"ravi",course:"mern",fees:13000},{name:"mohit",course:"php",fees:10000},{name:"kamal",course:"javascript",fees:11000}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("64059ac06ed44085973241e7"),
+    '1': ObjectId("64059ac06ed44085973241e8"),
+    '2': ObjectId("64059ac06ed44085973241e9")
+  }
+}
+abc_school> db.student.find();
+[
+  {
+    _id: ObjectId("640598166ed44085973241e5"),
+    id: 101,
+    name: 'amit',
+    city: 'delhi'
+  },
+  {
+    _id: ObjectId("640598c06ed44085973241e6"),
+    id: 102,
+    name: 'manish',
+    city: 'noida'
+  },
+  {
+    _id: ObjectId("64059ac06ed44085973241e7"),
+    name: 'ravi',
+    course: 'mern',
+    fees: 13000
+  },
+  {
+    _id: ObjectId("64059ac06ed44085973241e8"),
+    name: 'mohit',
+    course: 'php',
+    fees: 10000
+  },
+  {
+    _id: ObjectId("64059ac06ed44085973241e9"),
+    name: 'kamal',
+    course: 'javascript',
+    fees: 11000
+  }
+]
+abc_school> db.student.insertMany([{name:"anjali",course:"mern",fees:13000},{name:"kirti",course:"php",fees:10000},{name:"simran",course:"javascript",fees:11000}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("64059b506ed44085973241ea"),
+    '1': ObjectId("64059b506ed44085973241eb"),
+    '2': ObjectId("64059b506ed44085973241ec")
+  }
+}
+abc_school> db.student.find();
+[
+  {
+    _id: ObjectId("640598166ed44085973241e5"),
+    id: 101,
+    name: 'amit',
+    city: 'delhi'
+  },
+  {
+    _id: ObjectId("640598c06ed44085973241e6"),
+    id: 102,
+    name: 'manish',
+    city: 'noida'
+  },
+  {
+    _id: ObjectId("64059ac06ed44085973241e7"),
+    name: 'ravi',
+    course: 'mern',
+    fees: 13000
+  },
+  {
+    _id: ObjectId("64059ac06ed44085973241e8"),
+    name: 'mohit',
+    course: 'php',
+    fees: 10000
+  },
+  {
+    _id: ObjectId("64059ac06ed44085973241e9"),
+    name: 'kamal',
+    course: 'javascript',
+    fees: 11000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241ea"),
+    name: 'anjali',
+    course: 'mern',
+    fees: 13000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241eb"),
+    name: 'kirti',
+    course: 'php',
+    fees: 10000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241ec"),
+    name: 'simran',
+    course: 'javascript',
+    fees: 11000
+  }
+]
+abc_school> db.student.find({course:"javascript"});
+[
+  {
+    _id: ObjectId("64059ac06ed44085973241e9"),
+    name: 'kamal',
+    course: 'javascript',
+    fees: 11000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241ec"),
+    name: 'simran',
+    course: 'javascript',
+    fees: 11000
+  }
+]
+abc_school> db.student.find({fees:{$lt:13000}});
+[
+  {
+    _id: ObjectId("64059ac06ed44085973241e8"),
+    name: 'mohit',
+    course: 'php',
+    fees: 10000
+  },
+  {
+    _id: ObjectId("64059ac06ed44085973241e9"),
+    name: 'kamal',
+    course: 'javascript',
+    fees: 11000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241eb"),
+    name: 'kirti',
+    course: 'php',
+    fees: 10000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241ec"),
+    name: 'simran',
+    course: 'javascript',
+    fees: 11000
+  }
+]
+abc_school> db.student.insertMany([{name:"arun",course:"java",fees:5000},{name:"raj",course:"python",fees:6000},{name:"rohan",course:"mis",fees:4500}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("64059efc6ed44085973241ed"),
+    '1': ObjectId("64059efc6ed44085973241ee"),
+    '2': ObjectId("64059efc6ed44085973241ef")
+  }
+}
+abc_school> db.student.find({fees:{$lt:10000}});
+[
+  {
+    _id: ObjectId("64059efc6ed44085973241ed"),
+    name: 'arun',
+    course: 'java',
+    fees: 5000
+  },
+  {
+    _id: ObjectId("64059efc6ed44085973241ee"),
+    name: 'raj',
+    course: 'python',
+    fees: 6000
+  },
+  {
+    _id: ObjectId("64059efc6ed44085973241ef"),
+    name: 'rohan',
+    course: 'mis',
+    fees: 4500
+  }
+]
+abc_school> db.student.find({course:{$eq:"mis"}})
+[
+  {
+    _id: ObjectId("64059efc6ed44085973241ef"),
+    name: 'rohan',
+    course: 'mis',
+    fees: 4500
+  }
+]
+abc_school> db.student.find({fees:{$leq:6000}});
+MongoServerError: unknown operator: $leq
+abc_school> db.student.find({fees:{$lte:6000}});
+[
+  {
+    _id: ObjectId("64059efc6ed44085973241ed"),
+    name: 'arun',
+    course: 'java',
+    fees: 5000
+  },
+  {
+    _id: ObjectId("64059efc6ed44085973241ee"),
+    name: 'raj',
+    course: 'python',
+    fees: 6000
+  },
+  {
+    _id: ObjectId("64059efc6ed44085973241ef"),
+    name: 'rohan',
+    course: 'mis',
+    fees: 4500
+  }
+]
+abc_school> db.student.find({fees:{$lt:6000}});
+[
+  {
+    _id: ObjectId("64059efc6ed44085973241ed"),
+    name: 'arun',
+    course: 'java',
+    fees: 5000
+  },
+  {
+    _id: ObjectId("64059efc6ed44085973241ef"),
+    name: 'rohan',
+    course: 'mis',
+    fees: 4500
+  }
+]
+abc_school> db.student.find({course:{$nin:['java','javascript','python']}});
+[
+  {
+    _id: ObjectId("640598166ed44085973241e5"),
+    id: 101,
+    name: 'amit',
+    city: 'delhi'
+  },
+  {
+    _id: ObjectId("640598c06ed44085973241e6"),
+    id: 102,
+    name: 'manish',
+    city: 'noida'
+  },
+  {
+    _id: ObjectId("64059ac06ed44085973241e7"),
+    name: 'ravi',
+    course: 'mern',
+    fees: 13000
+  },
+  {
+    _id: ObjectId("64059ac06ed44085973241e8"),
+    name: 'mohit',
+    course: 'php',
+    fees: 10000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241ea"),
+    name: 'anjali',
+    course: 'mern',
+    fees: 13000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241eb"),
+    name: 'kirti',
+    course: 'php',
+    fees: 10000
+  },
+  {
+    _id: ObjectId("64059efc6ed44085973241ef"),
+    name: 'rohan',
+    course: 'mis',
+    fees: 4500
+  }
+]
+abc_school> db.student.find({course:{$in:['java','javascript','python']}});
+[
+  {
+    _id: ObjectId("64059ac06ed44085973241e9"),
+    name: 'kamal',
+    course: 'javascript',
+    fees: 11000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241ec"),
+    name: 'simran',
+    course: 'javascript',
+    fees: 11000
+  },
+  {
+    _id: ObjectId("64059efc6ed44085973241ed"),
+    name: 'arun',
+    course: 'java',
+    fees: 5000
+  },
+  {
+    _id: ObjectId("64059efc6ed44085973241ee"),
+    name: 'raj',
+    course: 'python',
+    fees: 6000
+  }
+]
+abc_school> db.student.find({$and:[{name:'kamal'},{course:'javascript'}]});
+[
+  {
+    _id: ObjectId("64059ac06ed44085973241e9"),
+    name: 'kamal',
+    course: 'javascript',
+    fees: 11000
+  }
+]
+abc_school> db.student.find({$or:[{name:'kamal'},{course:'javascript'}]});
+[
+  {
+    _id: ObjectId("64059ac06ed44085973241e9"),
+    name: 'kamal',
+    course: 'javascript',
+    fees: 11000
+  },
+  {
+    _id: ObjectId("64059b506ed44085973241ec"),
+    name: 'simran',
+    course: 'javascript',
+    fees: 11000
+  }
+]
+abc_school>
+
+
+how to find last 5 values in mongodb
+db.users.find().sort({id:-1}).limit(5)
